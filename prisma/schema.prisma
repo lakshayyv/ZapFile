@@ -14,12 +14,13 @@ datasource db {
 }
 
 model User {
-  id        String   @unique @default(uuid())
-  name      String
-  email     String   @unique
-  image     String?
-  file      File[]
-  createdAt DateTime @default(now())
+  id           String   @unique @default(uuid())
+  name         String
+  email        String   @unique
+  image        String?
+  public_token String   @unique @default(cuid())
+  file         File[]
+  createdAt    DateTime @default(now())
 }
 
 model File {
