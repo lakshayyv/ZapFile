@@ -32,14 +32,22 @@ export const AUTH_OPTIONS = {
       }
       return true;
     },
+    jwt: async ({ token, user }: { token: JWT; user: User | AdapterUser }) => {
+      const response = await client.user.findUnique({
+        where: { id: token.sub },
+      });
+      token.public_token = response?.public_token as string;
+      return token;
+    },
     session: ({ session, token }: { session: Session; token: JWT }) => {
-      if (session.user && token.sub) {
+      if (session.user && token.sub && token.public_token) {
         session.user.id = token.sub;
+        session.user.public_token = token.public_token as string;
       }
       return session;
     },
   },
   pages: {
-    signIn: "/auth/signin"
-  }
+    signIn: "/auth/signin",
+  },
 };
