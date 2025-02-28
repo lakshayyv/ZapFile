@@ -7,6 +7,7 @@ import { fetcher } from "@/lib/utils";
 import FileUpload from "@/components/ui/file-upload";
 import { FileCard } from "@/components/ui/file-card";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import Loader from "@/components/ui/loader";
 
 export default function Page() {
   const {
@@ -16,7 +17,7 @@ export default function Page() {
   } = useSWR<{ data: FileType[] }>("/api/files", fetcher);
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <Loader />;
   }
 
   if (error) {

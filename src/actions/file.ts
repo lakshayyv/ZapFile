@@ -12,7 +12,6 @@ export const upload = async (payload: {
   } catch (error) {
     if (isAxiosError(error)) {
       if (error.response?.data.data.code === "P2002") {
-        console.log("File already exists");
         throw new Error("File already exists");
       }
     }
@@ -20,7 +19,7 @@ export const upload = async (payload: {
   }
 };
 
-export const del = async (id: string) => {
+export const deleteById = async (id: string) => {
   try {
     const response = await axios.delete(`/api/file/${id}`);
     return response.data;

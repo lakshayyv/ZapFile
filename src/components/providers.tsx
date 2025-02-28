@@ -9,7 +9,7 @@ import Loader from "./ui/loader";
 
 export default function Provides({ children }: { children: React.ReactNode }) {
   const isLoading = useStore((state) => state.isLoading);
-  console.log(isLoading);
+
   return (
     <SessionProvider>
       <ThemeProvider attribute="class" defaultTheme="dark">

@@ -65,12 +65,21 @@ export function FileModal({ file }: { file: FileType }) {
             <Label htmlFor="passkey" className="text-right">
               Passkey
             </Label>
-            <Input id="passkey" onChange={handleInput} className="col-span-3" />
+            <Input
+              id="passkey"
+              value={passkey}
+              onChange={handleInput}
+              className="col-span-3"
+            />
           </div>
           {error && <div className="text-sm text-red-600">{error}</div>}
         </div>
         <DialogFooter>
-          <Button type="button" className="w-full bg-purple-600 hover:bg-purple-700 text-white font-semibold" onClick={handleDownload}>
+          <Button
+            type="button"
+            className="w-full bg-purple-600 hover:bg-purple-700 text-white font-semibold"
+            onClick={handleDownload}
+          >
             Save changes
           </Button>
         </DialogFooter>
