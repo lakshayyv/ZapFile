@@ -59,7 +59,12 @@ export function FileCard({ file }: { file: FileType }) {
         url: file.url,
       });
       mutate("/api/files");
-      toast.success(db_response.message || "File deleted succcesfully");
+      if (db_response.error) {
+        toast.error(db_response.error);
+      }
+      if (db_response.data) {
+        toast.success(db_response.data.message || "File deleted succcesfully");
+      }
     } catch (error: any) {
       toast.error(error.message || "Something went wrong");
     } finally {

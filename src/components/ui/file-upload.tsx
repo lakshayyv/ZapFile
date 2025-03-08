@@ -76,7 +76,12 @@ export default function FileUpload() {
       });
       await edgestore.publicFiles.confirmUpload({ url: store_response.url });
       mutate("/api/files");
-      toast.success(db_response.message || "File uploaded successfully");
+      if (db_response.error) {
+        toast.error(db_response.error);
+      }
+      if (db_response.data) {
+        toast.success(db_response.data.message || "File uploaded successfully");
+      }
     } catch (error: any) {
       toast.error(error.message || "Error uploading file");
     }
@@ -170,7 +175,7 @@ export default function FileUpload() {
           disabled={progressVisible}
           className="w-full bg-purple-600 hover:bg-purple-700 text-white font-semibold"
         >
-          {progressVisible ? `Uploading ${Math.floor(progress)}%` : "Submit"}
+          {progressVisible ? `Uploading ${Math.floor(progress)}%` : "Upload"}
         </Button>
       </form>
     </Form>

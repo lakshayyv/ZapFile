@@ -1,10 +1,18 @@
-import { signIn } from "next-auth/react";
-import { toast } from "sonner";
+import { signIn, signOut } from "next-auth/react";
 
 export const GoogleSignin = async () => {
   try {
     await signIn("google", { callbackUrl: "/dashboard", redirect: true });
   } catch (error) {
-    toast.error("Something went wrong");
+    return { error: "Something went wrong" };
+  }
+};
+
+export const logout = async () => {
+  try {
+    await signOut({ redirect: true, callbackUrl: "/auth/signin" });
+    return { data: "Logged out successfully" };
+  } catch (error) {
+    return { error: "Error signing you out" };
   }
 };

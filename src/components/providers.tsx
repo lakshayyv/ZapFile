@@ -6,6 +6,7 @@ import { Toaster } from "sonner";
 import { EdgeStoreProvider } from "@/lib/edgestore";
 import { useStore } from "@/store/loader";
 import Loader from "./ui/loader";
+import Navbar from "./ui/navbar";
 
 export default function Provides({ children }: { children: React.ReactNode }) {
   const isLoading = useStore((state) => state.isLoading);
@@ -16,6 +17,7 @@ export default function Provides({ children }: { children: React.ReactNode }) {
         <Toaster />
         {isLoading && <Loader />}
         <EdgeStoreProvider>
+          <Navbar />
           <div className="p-10">{children}</div>
         </EdgeStoreProvider>
       </ThemeProvider>

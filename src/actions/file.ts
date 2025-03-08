@@ -8,25 +8,25 @@ export const upload = async (payload: {
 }) => {
   try {
     const response = await axios.post("/api/file/upload", payload);
-    return response.data;
+    return { data: response.data };
   } catch (error) {
     if (isAxiosError(error)) {
       if (error.response?.data.data.code === "P2002") {
-        throw new Error("File already exists");
+        return { error: "File already exists" };
       }
     }
-    throw new Error("Error uploading file");
+    return { error: "Error uploading file" };
   }
 };
 
 export const deleteById = async (id: string) => {
   try {
     const response = await axios.delete(`/api/file/${id}`);
-    return response.data;
+    return { data: response.data };
   } catch (error) {
     if (isAxiosError(error)) {
       throw new Error(error.response?.data.message);
     }
-    throw new Error("Error uploading file");
+    return { error: "Error uploading file" };
   }
 };

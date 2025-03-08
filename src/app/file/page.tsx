@@ -64,13 +64,17 @@ export default function Page() {
   return (
     <Card className="w-[350px]">
       <CardHeader>
-        <CardTitle>
-          Download <span className="text-purple-600">{file?.data.name}</span>
+        <CardTitle
+          className="truncate w-full text-purple-600"
+          title={file?.data.name}
+        >
+          <span className="text-white">Download</span>{" "}
+          <span>{file?.data.name}</span>
         </CardTitle>
         <CardDescription>{file?.data.description}</CardDescription>
       </CardHeader>
       <CardContent>
-        <form>
+        <form onSubmit={(e) => e.preventDefault()}>
           <div className="grid w-full items-center gap-4">
             <div className="flex flex-col space-y-1.5">
               <Label htmlFor="passkey">Passkey</Label>
