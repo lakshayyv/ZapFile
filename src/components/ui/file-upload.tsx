@@ -1,6 +1,7 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FileUploadValidator, FileUploadValidatorType } from "@/lib/types";
+import { EdgeStoreApiClientError } from "@edgestore/react/errors";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -18,6 +19,7 @@ import { useState, useCallback } from "react";
 import { useDropzone } from "react-dropzone";
 import { UploadCloud } from "lucide-react";
 import { mutate } from "swr";
+import { formatFileSize } from "@edgestore/react/utils";
 
 export default function FileUpload() {
   const { edgestore } = useEdgeStore();
@@ -77,13 +79,24 @@ export default function FileUpload() {
       await edgestore.publicFiles.confirmUpload({ url: store_response.url });
       mutate("/api/files");
       if (db_response.error) {
+        console.log(db_response.error);
         toast.error(db_response.error);
       }
       if (db_response.data) {
         toast.success(db_response.data.message || "File uploaded successfully");
       }
     } catch (error: any) {
-      toast.error(error.message || "Error uploading file");
+      if (error instanceof EdgeStoreApiClientError) {
+        if (error.data.code === "FILE_TOO_LARGE") {
+          toast.error(
+            `File too large. Max size is ${formatFileSize(
+              error.data.details.maxFileSize
+            )}`
+          );
+        }
+      } else {
+        toast.error(error.message || "Error uploading file");
+      }
     }
     setProgressVisible(false);
     setProgress(0);

@@ -14,6 +14,7 @@ import { DialogTitle, DialogTrigger } from "@radix-ui/react-dialog";
 import UserAvatar from "./user-avatar";
 import { redirect, useRouter } from "next/navigation";
 import { toast } from "sonner";
+import Search from "./search";
 
 export default function Navbar() {
   const [search, setSearch] = useState("");
@@ -56,28 +57,24 @@ export default function Navbar() {
         </NavigationMenuList>
       </NavigationMenu>
       <div className="w-full" />
-      <Dialog open={isSearchOpen} onOpenChange={setIsSearchOpen}>
-        <DialogTrigger className="w-1/4 p-2 pl-4 text-white bg-gray-800 rounded-lg">
-          <div className="flex items-center justify-between">
-            <h1 className="text-gray-500">Search...</h1>
-            <div className="flex items-center justify-center w-10 h-6 p-1 bg-black text-xs text-gray-300 rounded">
-              ⌘ K
+      {session?.user && (
+        <>
+          {" "}
+          <div
+            className="w-1/4 p-2 pl-4 text-white bg-gray-800 rounded-lg"
+            onClick={() => setIsSearchOpen(true)}
+          >
+            <div className="flex items-center justify-between">
+              <h1 className="text-gray-500">Search...</h1>
+              <div className="flex items-center justify-center w-10 h-6 p-1 bg-black text-xs text-gray-300 rounded">
+                ⌘ K
+              </div>
             </div>
           </div>
-        </DialogTrigger>
-        <DialogTitle />
-        <DialogContent className="max-w-lg p-0 min-h-[50%] rounded bg-black border-2 overflow-hidden">
-          <input
-            type="text"
-            value={search}
-            onChange={handleSearchChange}
-            placeholder="Search..."
-            className="w-full h-14 p-5 outline-none border-none "
-            ref={searchInputRef}
-          />
-        </DialogContent>
-      </Dialog>
-      {session?.user && <UserAvatar user={session?.user} />}
+          <UserAvatar user={session?.user} />
+        </>
+      )}
+      {/* <Search open={isSearchOpen} onOpenChange={setIsSearchOpen} /> */}
     </nav>
   );
 }

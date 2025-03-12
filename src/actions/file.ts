@@ -9,7 +9,7 @@ export const upload = async (payload: {
   try {
     const response = await axios.post("/api/file/upload", payload);
     return { data: response.data };
-  } catch (error) {
+  } catch (error ) {
     if (isAxiosError(error)) {
       if (error.response?.data.data.code === "P2002") {
         return { error: "File already exists" };

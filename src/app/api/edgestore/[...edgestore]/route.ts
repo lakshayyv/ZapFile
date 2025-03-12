@@ -4,26 +4,12 @@ import {
   type CreateContextOptions,
   createEdgeStoreNextHandler,
 } from "@edgestore/server/adapters/next/app";
-import { getServerSession } from "next-auth";
 
-type Context = {
-  userId: string | null;
-};
-
-async function createContext({ req }: CreateContextOptions): Promise<Context> {
-  const session = await getServerSession(AUTH_OPTIONS);
-  return {
-    userId: session?.user?.public_token || null,
-  };
-}
-
-// Initialize Edge Store with context
-const es = initEdgeStore.context<Context>().create();
+const es = initEdgeStore.create();
 
 const edgeStoreRouter = es.router({
   publicFiles: es
-    .fileBucket()
-    .path(({ ctx }) => [{ author: ctx.userId }])
+    .fileBucket({ maxSize: 1024 * 1024 * 5 })
     .beforeDelete(({ ctx, fileInfo }) => {
       return true;
     }),
@@ -31,9 +17,7 @@ const edgeStoreRouter = es.router({
 
 const handler = createEdgeStoreNextHandler({
   router: edgeStoreRouter,
-  createContext,
 });
 
 export { handler as GET, handler as POST };
-
 export type EdgeStoreRouter = typeof edgeStoreRouter;

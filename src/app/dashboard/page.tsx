@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect } from "react";
 import useSWR from "swr";
 import { FileType } from "@/lib/types";
 import { toast } from "sonner";
@@ -8,21 +9,27 @@ import FileUpload from "@/components/ui/file-upload";
 import { FileCard } from "@/components/ui/file-card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import Loader from "@/components/ui/loader";
+import { useRouter } from "next/navigation";
 
 export default function Page() {
+  const router = useRouter();
   const {
     data: files,
     error,
     isLoading,
   } = useSWR<{ data: FileType[] }>("/api/files", fetcher);
 
+  useEffect(() => {
+    if (error) {
+      toast.error("Unauthorized");
+      router.push("/auth/signin");
+    }
+  }, [error, router]);
+
   if (isLoading) {
     return <Loader />;
   }
 
-  if (error) {
-    toast.error(error);
-  }
   return (
     <div className="grid grid-cols-2 gap-x-14">
       <FileUpload />
