@@ -45,6 +45,7 @@ export function FileCard({ file }: { file: FileType }) {
         anchor.click();
         document.body.removeChild(anchor);
       } else {
+        
       }
     } catch (error) {
       console.error("Error downloading file:", error);
@@ -125,13 +126,15 @@ export function FileCard({ file }: { file: FileType }) {
 
       <CardContent></CardContent>
       <CardFooter className="flex justify-between items-center">
-        <Button
-          type="button"
-          className="bg-red-600 hover:bg-red-700 text-white font-semibold"
-          onClick={handleDelete}
-        >
-          Delete
-        </Button>
+        {!file.read_only && (
+          <Button
+            type="button"
+            className="bg-red-600 hover:bg-red-700 text-white font-semibold"
+            onClick={handleDelete}
+          >
+            Delete
+          </Button>
+        )}
         {session?.user.public_token === file.public_token ? (
           <Button
             className="bg-purple-600 hover:bg-purple-700 text-white font-semibold"

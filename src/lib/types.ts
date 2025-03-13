@@ -7,6 +7,7 @@ export type FileType = {
   url: string;
   public_token: string;
   passkey: string;
+  read_only?: boolean;
 };
 
 export const FileUploadValidator = z.object({

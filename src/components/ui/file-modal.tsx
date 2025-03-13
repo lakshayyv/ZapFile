@@ -13,7 +13,8 @@ import { Label } from "@/components/ui/label";
 import { FileType } from "@/lib/types";
 import { comparePasskey } from "@/lib/utils";
 import { getDownloadUrl } from "@edgestore/react/utils";
-import { useState } from "react";
+import { useCallback, useState } from "react";
+import { toast } from "sonner";
 
 export function FileModal({ file }: { file: FileType }) {
   const [passkey, setPasskey] = useState<string>("");
@@ -25,18 +26,36 @@ export function FileModal({ file }: { file: FileType }) {
     setPasskey(e.target.value);
   };
 
-  const handleDownload = () => {
-    if (comparePasskey(passkey, file.passkey)) {
-      const url = getDownloadUrl(file.url);
-      const anchor = document.createElement("a");
-      anchor.href = url;
-      anchor.download = file.name;
-      document.body.appendChild(anchor);
-      anchor.click();
-      document.body.removeChild(anchor);
-      setError("");
-    } else {
+  const handleDownload = useCallback(() => {
+    if (!comparePasskey(passkey, file.passkey)) {
       setError("Enter correct passkey");
+      return;
+    }
+
+    try {
+      const url = getDownloadUrl(file.url);
+      fetch(url)
+        .then((response) => response.blob())
+        .then((blob) => {
+          const objectUrl = URL.createObjectURL(blob);
+          const anchor = document.createElement("a");
+          anchor.href = objectUrl;
+          anchor.download = file.name;
+          anchor.click();
+          URL.revokeObjectURL(objectUrl);
+          toast.success(`${file.name} downloaded`);
+          setError("");
+          setOpen(false);
+        })
+        .catch(() => setError("Failed to download file"));
+    } catch (error) {
+      setError("Error generating download link");
+    }
+  }, [passkey, file]);
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
     }
   };
 
@@ -69,6 +88,7 @@ export function FileModal({ file }: { file: FileType }) {
               id="passkey"
               value={passkey}
               onChange={handleInput}
+              onKeyDown={handleKeyDown}
               className="col-span-3"
             />
           </div>
@@ -80,7 +100,7 @@ export function FileModal({ file }: { file: FileType }) {
             className="w-full bg-purple-600 hover:bg-purple-700 text-white font-semibold"
             onClick={handleDownload}
           >
-            Save changes
+            Download
           </Button>
         </DialogFooter>
       </DialogContent>

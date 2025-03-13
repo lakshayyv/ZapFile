@@ -57,24 +57,8 @@ export default function Navbar() {
         </NavigationMenuList>
       </NavigationMenu>
       <div className="w-full" />
-      {session?.user && (
-        <>
-          {" "}
-          <div
-            className="w-1/4 p-2 pl-4 text-white bg-gray-800 rounded-lg"
-            onClick={() => setIsSearchOpen(true)}
-          >
-            <div className="flex items-center justify-between">
-              <h1 className="text-gray-500">Search...</h1>
-              <div className="flex items-center justify-center w-10 h-6 p-1 bg-black text-xs text-gray-300 rounded">
-                ⌘ K
-              </div>
-            </div>
-          </div>
-          <UserAvatar user={session?.user} />
-        </>
-      )}
-      {/* <Search open={isSearchOpen} onOpenChange={setIsSearchOpen} /> */}
+      <Search />
+      {session?.user && <UserAvatar user={session?.user} />}
     </nav>
   );
 }

@@ -76,14 +76,14 @@ export default function FileUpload() {
         description: values.description || undefined,
         url: store_response.url,
       });
-      await edgestore.publicFiles.confirmUpload({ url: store_response.url });
-      mutate("/api/files");
+
       if (db_response.error) {
-        console.log(db_response.error);
-        toast.error(db_response.error);
+        toast.error(db_response.error || "Error uploading file");
       }
       if (db_response.data) {
         toast.success(db_response.data.message || "File uploaded successfully");
+        await edgestore.publicFiles.confirmUpload({ url: store_response.url });
+        mutate("/api/files");
       }
     } catch (error: any) {
       if (error instanceof EdgeStoreApiClientError) {

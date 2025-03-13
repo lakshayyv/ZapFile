@@ -16,6 +16,12 @@ export const POST = async (req: NextRequest) => {
     if (!(session && session.user)) {
       throw new CustomError("Unauthorized", 401);
     }
+    const exist = await client.file.findFirst({
+      where: { name: payload.name, userId: session.user.id },
+    });
+    if (exist) {
+      throw new CustomError("File already exist");
+    }
     const response = await client.file.create({
       data: {
         name: payload.name,
