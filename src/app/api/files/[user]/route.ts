@@ -1,13 +1,15 @@
 import client from "@/config/db";
 import { ErrorHandler } from "@/lib/error";
-import { NextApiRequest } from "next";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
-export const GET = async (req: NextApiRequest) => {
+export const GET = async (
+  req: NextRequest,
+  { params }: { params: Promise<{ user: string }> }
+) => {
   try {
-    const { user } = await req.query;
+    const { user } = await params;
     const response = await client.file.findMany({
-      where: { public_token: user as string },
+      where: { public_token: user },
     });
     return NextResponse.json(
       {
