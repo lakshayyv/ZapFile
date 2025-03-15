@@ -1,14 +1,14 @@
 import client from "@/config/db";
 import { ErrorHandler } from "@/lib/error";
-import { NextRequest, NextResponse } from "next/server";
+import { NextApiRequest } from "next";
+import { NextResponse } from "next/server";
 
-export const GET = async (
-  req: NextRequest,
-  context: { params: { id: string } }
-) => {
+export const GET = async (req: NextApiRequest) => {
   try {
-    const { id } = await context.params;
-    const response = await client.file.findUnique({ where: { id: id } });
+    const { id } = await req.query;
+    const response = await client.file.findUnique({
+      where: { id: id as string },
+    });
     if (response) {
       return NextResponse.json(
         {
@@ -29,13 +29,10 @@ export const GET = async (
   }
 };
 
-export const DELETE = async (
-  req: NextRequest,
-  context: { params: { id: string } }
-) => {
+export const DELETE = async (req: NextApiRequest) => {
   try {
-    const { id } = await context.params;
-    const response = await client.file.delete({ where: { id: id } });
+    const { id } = await req.query;
+    const response = await client.file.delete({ where: { id: id as string } });
     if (response) {
       return NextResponse.json(
         {
