@@ -4,10 +4,10 @@ import { NextRequest, NextResponse } from "next/server";
 
 export const GET = async (
   req: NextRequest,
-  { params }: { params: { id: string } }
+  context: { params: { id: string } }
 ) => {
   try {
-    const { id } = await params;
+    const { id } = await context.params;
     const response = await client.file.findUnique({ where: { id: id } });
     if (response) {
       return NextResponse.json(
@@ -31,10 +31,10 @@ export const GET = async (
 
 export const DELETE = async (
   req: NextRequest,
-  { params }: { params: { id: string } }
+  context: { params: { id: string } }
 ) => {
   try {
-    const { id } = await params;
+    const { id } = await context.params;
     const response = await client.file.delete({ where: { id: id } });
     if (response) {
       return NextResponse.json(

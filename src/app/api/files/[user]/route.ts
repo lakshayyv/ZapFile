@@ -4,10 +4,10 @@ import { NextRequest, NextResponse } from "next/server";
 
 export const GET = async (
   req: NextRequest,
-  { params }: { params: { user: string } }
+  context: { params: { user: string } }
 ) => {
   try {
-    const { user } = await params;
+    const { user } = await context.params;
     const response = await client.file.findMany({
       where: { public_token: user },
     });
