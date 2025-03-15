@@ -45,7 +45,6 @@ export function FileCard({ file }: { file: FileType }) {
         anchor.click();
         document.body.removeChild(anchor);
       } else {
-        
       }
     } catch (error) {
       console.error("Error downloading file:", error);
@@ -76,7 +75,7 @@ export function FileCard({ file }: { file: FileType }) {
   const handleCopy = async () => {
     try {
       await navigator.clipboard.writeText(
-        `http://localhost:3000/file?id=${file.id}`
+        `${process.env.NEXT_PUBLIC_APP_URL}/file?id=${file.id}`
       );
       setCopied(true);
       toast.success("Link copied to clipboard!");
@@ -105,7 +104,7 @@ export function FileCard({ file }: { file: FileType }) {
           >
             <div className="flex items-center gap-2">
               <span className="text-sm truncate max-w-[200px]">
-                http://localhost:3000/file?id={file.id}
+                {process.env.NEXT_PUBLIC_APP_URL}/file?id={file.id}
               </span>
               <Button
                 variant="ghost"
