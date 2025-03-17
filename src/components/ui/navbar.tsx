@@ -15,6 +15,7 @@ import UserAvatar from "./user-avatar";
 import { redirect, useRouter } from "next/navigation";
 import { toast } from "sonner";
 import Search from "./search";
+import { Button } from "./button";
 
 export default function Navbar() {
   const [search, setSearch] = useState("");
@@ -56,7 +57,7 @@ export default function Navbar() {
           </NavigationMenuItem>
         </NavigationMenuList>
       </NavigationMenu>
-      <div className="w-full" />
+      <div className="hidden xl:inline xl:w-full" />
       <Search />
       {session?.user && <UserAvatar user={session?.user} />}
     </nav>

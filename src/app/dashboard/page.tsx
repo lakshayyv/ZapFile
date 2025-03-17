@@ -19,19 +19,12 @@ export default function Page() {
     isLoading,
   } = useSWR<{ data: FileType[] }>("/api/files", fetcher);
 
-  useEffect(() => {
-    if (error) {
-      toast.error("Unauthorized");
-      router.push("/auth/signin");
-    }
-  }, [error, router]);
-
   if (isLoading) {
     return <Loader />;
   }
 
   return (
-    <div className="grid grid-cols-2 gap-x-14">
+    <div className="grid gap-y-7 xl:gap-y-0 xl:grid-cols-2 gap-x-14">
       <FileUpload />
       <div className="h-[90vh] space-y-5 pb-12">
         <h1 className="text-3xl font-semibold">Files</h1>

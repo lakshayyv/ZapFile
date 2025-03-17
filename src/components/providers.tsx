@@ -18,7 +18,7 @@ export default function Provides({ children }: { children: React.ReactNode }) {
         {isLoading && <Loader />}
         <EdgeStoreProvider>
           <Navbar />
-          <div className="p-10">{children}</div>
+          {children}
         </EdgeStoreProvider>
       </ThemeProvider>
     </SessionProvider>

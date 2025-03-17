@@ -4,7 +4,7 @@ import { Suspense } from "react";
 
 export default function Page() {
   return (
-    <div>
+    <div className="w-full">
       <Suspense fallback={<Loader />}>
         <FileList />
       </Suspense>

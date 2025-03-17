@@ -1,15 +1,14 @@
 "use client";
 
 import * as React from "react";
-import { LogOut } from "lucide-react";
 
 import {
   CommandDialog,
-  CommandEmpty,
-  CommandGroup,
+  // CommandEmpty,
+  // CommandGroup,
   CommandInput,
-  CommandItem,
-  CommandList,
+  // CommandItem,
+  // CommandList,
 } from "@/components/ui/command";
 import {
   Select,
@@ -21,11 +20,13 @@ import {
 } from "@/components/ui/select";
 import { DialogTitle } from "@radix-ui/react-dialog";
 import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 
 export default function Search() {
   const [open, setOpen] = React.useState(false);
   const [searchTerm, setSearchTerm] = React.useState("");
   const router = useRouter();
+  const { data: session, status } = useSession();
   const [value, setValue] = React.useState<string | undefined>("file"); // Default value
 
   React.useEffect(() => {
@@ -48,10 +49,20 @@ export default function Search() {
     return () => document.removeEventListener("keydown", down);
   }, [searchTerm, router, open, value]);
 
+  // const handleLogout = async () => {
+  //   const response = await logout();
+  //   if (response.error) {
+  //     toast.error(response.error);
+  //   }
+  //   if (response.data) {
+  //     toast.success(response.data);
+  //   }
+  // };
+
   return (
     <>
       <div
-        className="w-1/4 p-2 pl-4 text-white bg-gray-800 rounded-lg cursor-pointer"
+        className="w-full xl:w-1/4 p-2 pl-4 text-white bg-gray-800 rounded-lg cursor-pointer"
         onClick={() => setOpen(true)}
       >
         <div className="flex items-center justify-between">
@@ -82,14 +93,16 @@ export default function Search() {
             onValueChange={(val) => setSearchTerm(val)}
           />
         </div>
-        <CommandList>
-          <CommandGroup heading="Actions">
-            <CommandItem>
-              <LogOut />
-              <span>Logout</span>
-            </CommandItem>
-          </CommandGroup>
-        </CommandList>
+        {/* {status === "authenticated" && (
+          <CommandList>
+            <CommandGroup heading="Actions">
+              <CommandItem onClick={handleLogout}>
+                <LogOut />
+                <span>Logout</span>
+              </CommandItem>
+            </CommandGroup>
+          </CommandList>
+        )} */}
       </CommandDialog>
     </>
   );
